@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import prisma from "@/lib/prisma";
 import { AddBusinessDialog } from "./add-business-dialog";
 import { format } from "date-fns";
