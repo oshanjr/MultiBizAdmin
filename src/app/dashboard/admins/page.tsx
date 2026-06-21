@@ -49,7 +49,7 @@ export default async function AdminsPage() {
             No admin users found.
           </div>
         ) : (
-          admins.map((admin) => (
+          admins.map((admin: any) => (
             <div key={admin.id} className="rounded-lg border bg-card p-4 space-y-3">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
@@ -98,7 +98,7 @@ export default async function AdminsPage() {
                 </TableCell>
               </TableRow>
             ) : (
-              admins.map((admin) => (
+              admins.map((admin: any) => (
                 <TableRow key={admin.id}>
                   <TableCell className="font-medium">
                     <span>{admin.name || "—"}</span>
