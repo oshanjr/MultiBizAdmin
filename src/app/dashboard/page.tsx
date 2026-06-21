@@ -53,7 +53,7 @@ export default async function DashboardPage() {
   const totalProfit = Number(totalAggregates._sum.netProfit || 0);
 
   // Format chart data
-  const chartData = chartDataRaw.map(day => ({
+  const chartData = chartDataRaw.map((day: any) => ({
     date: day.date.toISOString(),
     revenue: Number(day._sum.totalRevenue || 0),
     profit: Number(day._sum.netProfit || 0),
