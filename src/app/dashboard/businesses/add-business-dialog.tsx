@@ -51,11 +51,9 @@ export function AddBusinessDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="gap-2">
-          <PlusCircle className="h-4 w-4" />
-          Add Business
-        </Button>
+      <DialogTrigger render={<Button className="gap-2" />}>
+        <PlusCircle className="h-4 w-4" />
+        Add Business
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

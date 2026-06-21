@@ -36,9 +36,9 @@ export function ExportButton({ data }: { data: any[] }) {
   };
 
   return (
-    <Button variant="outline" size="sm" className="gap-2" onClick={handleExport}>
+    <Button variant="outline" size="sm" className="gap-2 shrink-0" onClick={handleExport}>
       <Download className="h-4 w-4" />
-      Export to Excel
+      <span className="hidden sm:inline">Export to Excel</span>
     </Button>
   );
 }

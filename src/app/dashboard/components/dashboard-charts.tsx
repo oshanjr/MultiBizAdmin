@@ -20,21 +20,21 @@ export function DashboardCharts({ data }: { data: ChartData[] }) {
   }, [data]);
 
   return (
-    <Card className="col-span-1 lg:col-span-3">
+    <Card>
       <CardHeader>
-        <CardTitle>Revenue vs. Profit (Last 30 Days)</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-base sm:text-lg">Revenue vs. Profit (Last 30 Days)</CardTitle>
+        <CardDescription className="text-xs sm:text-sm">
           Aggregated financial performance across all active business modules.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="h-[350px] w-full">
+        <div className="h-[250px] sm:h-[300px] lg:h-[350px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
               data={formattedData}
               margin={{
                 top: 10,
-                right: 30,
+                right: 10,
                 left: 0,
                 bottom: 0,
               }}
@@ -54,19 +54,21 @@ export function DashboardCharts({ data }: { data: ChartData[] }) {
                 dataKey="displayDate" 
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: 12 }}
+                tick={{ fontSize: 11 }}
                 dy={10}
+                interval="preserveStartEnd"
               />
               <YAxis 
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: 12 }}
-                tickFormatter={(value) => `$${value.toLocaleString()}`}
-                width={80}
+                tick={{ fontSize: 11 }}
+                tickFormatter={(value) => `$${value >= 1000 ? `${(value / 1000).toFixed(0)}k` : value}`}
+                width={55}
               />
               <Tooltip 
                 formatter={(value: number) => [`$${value.toLocaleString()}`, undefined]}
                 labelStyle={{ color: 'black' }}
+                contentStyle={{ fontSize: '13px', borderRadius: '8px' }}
               />
               <Area 
                 type="monotone" 

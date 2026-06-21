@@ -10,9 +10,9 @@ export function AppHeader() {
   const { data: session } = useSession();
 
   return (
-    <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-6 lg:h-[60px]">
+    <header className="flex h-14 items-center gap-3 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
       <Sheet>
-      <SheetTrigger
+        <SheetTrigger
           render={<Button variant="outline" size="icon" className="shrink-0 md:hidden" />}
         >
           <Menu className="h-5 w-5" />
@@ -23,11 +23,13 @@ export function AppHeader() {
         </SheetContent>
       </Sheet>
       
-      <div className="flex flex-1 items-center justify-end gap-4">
-        <div className="flex items-center gap-2 text-sm font-medium">
-          <User className="h-4 w-4" />
-          {session?.user?.email}
-          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary">
+      <div className="flex flex-1 items-center justify-end gap-2 sm:gap-4">
+        <div className="flex items-center gap-1.5 sm:gap-2 text-sm font-medium min-w-0">
+          <User className="h-4 w-4 shrink-0 hidden sm:block" />
+          <span className="truncate max-w-[120px] sm:max-w-[200px] lg:max-w-none">
+            {session?.user?.name || session?.user?.email}
+          </span>
+          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary shrink-0">
             {session?.user?.role}
           </span>
         </div>

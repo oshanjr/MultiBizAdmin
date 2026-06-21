@@ -60,18 +60,20 @@ export default async function DashboardPage() {
   }));
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between">
+    <div className="flex flex-col gap-4 sm:gap-6">
+      {/* Page Header */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Dashboard</h1>
+          <p className="text-sm text-muted-foreground sm:text-base">
             Overview of your global business operations and financials.
           </p>
         </div>
         <ExportButton data={recentSyncs} />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      {/* KPI Cards */}
+      <div className="grid gap-3 grid-cols-1 sm:grid-cols-3 sm:gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Global Revenue</CardTitle>
@@ -101,56 +103,54 @@ export default async function DashboardPage() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-4">
-        {/* Chart taking up 3/4 width on large screens */}
-        <DashboardCharts data={chartData} />
+      {/* Chart */}
+      <DashboardCharts data={chartData} />
 
-        {/* Recent syncs table taking up 1/4 width on large screens or full width below */}
-        <Card className="col-span-1 lg:col-span-4">
-          <CardHeader>
-            <CardTitle>Recent Syncs</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
+      {/* Recent Syncs Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Syncs</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Business</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead className="text-right">Revenue</TableHead>
+                <TableHead className="text-right hidden sm:table-cell">Net Profit</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {recentSyncs.length === 0 ? (
                 <TableRow>
-                  <TableHead>Business</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead className="text-right">Revenue</TableHead>
-                  <TableHead className="text-right">Net Profit</TableHead>
+                  <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
+                    No financial data synced yet.
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {recentSyncs.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
-                      No financial data synced yet.
+              ) : (
+                recentSyncs.map((sync) => (
+                  <TableRow key={sync.id}>
+                    <TableCell>
+                      <div className="font-medium">{sync.business.name}</div>
+                      <Badge variant="secondary" className="mt-1 text-[10px]">
+                        {sync.business.type}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{format(new Date(sync.date), "MMM d, yyyy")}</TableCell>
+                    <TableCell className="text-right">${Number(sync.totalRevenue).toLocaleString()}</TableCell>
+                    <TableCell className="text-right hidden sm:table-cell">
+                      <span className={Number(sync.netProfit) >= 0 ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
+                        ${Number(sync.netProfit).toLocaleString()}
+                      </span>
                     </TableCell>
                   </TableRow>
-                ) : (
-                  recentSyncs.map((sync) => (
-                    <TableRow key={sync.id}>
-                      <TableCell>
-                        <div className="font-medium">{sync.business.name}</div>
-                        <Badge variant="secondary" className="mt-1 text-[10px]">
-                          {sync.business.type}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{format(new Date(sync.date), "MMM d, yyyy")}</TableCell>
-                      <TableCell className="text-right">${Number(sync.totalRevenue).toLocaleString()}</TableCell>
-                      <TableCell className="text-right">
-                        <span className={Number(sync.netProfit) >= 0 ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
-                          ${Number(sync.netProfit).toLocaleString()}
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-      </div>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 }
