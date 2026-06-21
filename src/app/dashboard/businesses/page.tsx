@@ -35,7 +35,7 @@ export default async function BusinessesPage() {
             No business modules registered yet.
           </div>
         ) : (
-          businesses.map((business) => (
+          businesses.map((business: any) => (
             <div key={business.id} className="rounded-lg border bg-card p-4 space-y-3">
               <div className="flex items-start justify-between gap-2">
                 <div>
@@ -77,7 +77,7 @@ export default async function BusinessesPage() {
                 </TableCell>
               </TableRow>
             ) : (
-              businesses.map((business) => (
+              businesses.map((business: any) => (
                 <TableRow key={business.id}>
                   <TableCell className="font-medium">{business.name}</TableCell>
                   <TableCell>
