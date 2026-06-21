@@ -8,7 +8,7 @@ const ingestSchema = z.object({
   }),
   totalRevenue: z.number().min(0),
   totalExpenses: z.number().min(0),
-  metadata: z.record(z.any()).optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
 });
 
 export async function POST(request: Request) {

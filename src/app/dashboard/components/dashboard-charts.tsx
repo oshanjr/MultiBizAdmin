@@ -66,7 +66,7 @@ export function DashboardCharts({ data }: { data: ChartData[] }) {
                 width={55}
               />
               <Tooltip 
-                formatter={(value: number) => [`$${value.toLocaleString()}`, undefined]}
+                formatter={(value: any) => [`$${Number(value).toLocaleString()}`, undefined]}
                 labelStyle={{ color: 'black' }}
                 contentStyle={{ fontSize: '13px', borderRadius: '8px' }}
               />
