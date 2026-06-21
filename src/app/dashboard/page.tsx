@@ -129,7 +129,7 @@ export default async function DashboardPage() {
                   </TableCell>
                 </TableRow>
               ) : (
-                recentSyncs.map((sync) => (
+                recentSyncs.map((sync: any) => (
                   <TableRow key={sync.id}>
                     <TableCell>
                       <div className="font-medium">{sync.business.name}</div>
