@@ -1,0 +1,46 @@
+# Project Context: Central Admin Hub (Microservices Architecture)
+You are an expert full-stack developer and UI/UX designer. Your task is to build a secure "Central Admin Hub" using a Hub-and-Spoke microservices architecture. 
+
+This Admin Panel acts as the "HQ" for an owner who manages multiple businesses (e.g., a Fish Store, a Bus Fleet). It does NOT handle day-to-day operations. Instead, it securely receives daily financial summaries via API from independent business systems (the spokes), aggregates the data, and displays high-level growth metrics and KPIs.
+
+## Tech Stack
+*   **Framework:** Next.js 14+ (App Router)
+*   **Language:** Strict TypeScript (ensure all types and interfaces are explicitly defined to prevent build errors)
+*   **Styling:** Tailwind CSS
+*   **UI Components:** Shadcn UI, Lucide React (icons), Recharts (for dashboards)
+*   **Authentication:** NextAuth.js (v5) / Auth.js
+*   **Database ORM:** Prisma (assumes MySQL/PostgreSQL underlying)
+*   **Utilities:** `date-fns` (date formatting), `xlsx` or `papaparse` (for Excel export)
+
+## Database Schema (Prisma)
+Design the database schema with the following core tables:
+1.  **User:** `id`, `name`, `email`, `passwordHash`, `role` (enum: OWNER, SYSTEM_ADMIN), `createdAt`.
+2.  **BusinessModule:** `id`, `name` (e.g., "Gampaha Fish Store"), `type` (e.g., "RETAIL", "TRANSPORT"), `apiKey` (hashed/secure string for API authentication), `isActive` (boolean).
+3.  **DailyFinancialSummary:** `id`, `businessId` (relation), `date`, `totalRevenue` (decimal), `totalExpenses` (decimal), `netProfit` (decimal), `metadata` (JSON field for business-specific extra stats).
+
+## Security & Architecture Requirements
+Since this handles sensitive financial data, implement strict security measures:
+*   **API Gateway Security:** Create a secure `/api/v1/ingest` route. This route MUST require an `x-api-key` header. Validate the API key against the `BusinessModule` table before accepting the JSON payload.
+*   **Route Protection:** Use Next.js middleware to ensure all `/dashboard` routes are protected and only accessible to authenticated users with the OWNER or SYSTEM_ADMIN role.
+*   **Sanitization:** Strictly validate incoming API payloads (e.g., using Zod) to ensure numbers are actually numbers and dates are properly formatted.
+
+## UI / UX Requirements (Shadcn UI)
+The design should be clean, modern, and highly professional.
+*   **Layout:** A persistent collapsible sidebar navigation (Dashboard, Businesses, API Keys, Settings) and a top header containing user profile and logout.
+*   **Dashboard View:** 
+    *   Top row: Shadcn `Card` components showing "Total Global Revenue", "Total Global Profit", "Active Businesses".
+    *   Middle row: A `Recharts` area chart showing revenue vs. profit over the last 30 days aggregated across all businesses.
+    *   Bottom row: A Shadcn `Table` showing the latest daily syncs from connected businesses.
+*   **Business Management View:** A table listing all connected businesses, their status, and an action button to "Generate New API Key".
+*   **Export Feature:** A dedicated button on the dashboard to "Export Financials to Excel".
+
+## Step-by-Step Implementation Plan
+Please generate the code in the following order:
+1.  **Setup & Configuration:** Initialize the Next.js project, configure Tailwind, and set up the Prisma schema.
+2.  **Authentication:** Implement the NextAuth configuration, login page, and middleware for protecting routes.
+3.  **UI Layout:** Create the global sidebar, header, and main dashboard layout shell.
+4.  **API Ingestion Route:** Build the highly secure Next.js API route that accepts the `{ date, totalRevenue, totalExpenses }` payload from external systems.
+5.  **Dashboard Components:** Build the KPI cards, the Recharts graphs, and the recent activity table fetching data via server actions.
+6.  **Module Management:** Build the page to add a new business and generate its secure API key.
+
+Ensure all code is production-ready, heavily commented, and uses practical, real-world variable names. Address potential edge cases, such as an external business attempting to submit data for a date that already exists in the database (upsert logic).
