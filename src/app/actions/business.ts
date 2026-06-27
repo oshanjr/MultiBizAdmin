@@ -62,3 +62,21 @@ export async function toggleBusinessStatus(id: string, currentStatus: boolean) {
     return { error: "Failed to update status" };
   }
 }
+
+export async function deleteBusiness(id: string) {
+  const session = await auth();
+  
+  if (!session || !["OWNER", "SYSTEM_ADMIN"].includes(session.user.role)) {
+    return { error: "Unauthorized" };
+  }
+
+  try {
+    await prisma.businessModule.delete({
+      where: { id },
+    });
+    revalidatePath("/dashboard/businesses");
+    return { success: true };
+  } catch (error) {
+    return { error: "Failed to delete business" };
+  }
+}

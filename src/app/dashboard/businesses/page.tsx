@@ -2,6 +2,8 @@ export const dynamic = "force-dynamic";
 
 import prisma from "@/lib/prisma";
 import { AddBusinessDialog } from "./add-business-dialog";
+import { ApiKeyDisplay } from "./api-key-display";
+import { DeleteBusinessButton } from "./delete-business-button";
 import { format } from "date-fns";
 import {
   Table,
@@ -50,9 +52,12 @@ export default async function BusinessesPage() {
                   <Badge variant="destructive" className="shrink-0">Inactive</Badge>
                 )}
               </div>
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
+              <div className="flex items-center justify-between text-sm text-muted-foreground mt-2">
                 <span>{format(business.createdAt, "MMM d, yyyy")}</span>
-                <span className="font-mono text-xs">{business.apiKey.substring(0, 8)}...</span>
+                <div className="flex items-center gap-1">
+                  <ApiKeyDisplay apiKey={business.apiKey} />
+                  <DeleteBusinessButton id={business.id} name={business.name} />
+                </div>
               </div>
             </div>
           ))
@@ -68,7 +73,8 @@ export default async function BusinessesPage() {
               <TableHead>Type</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="hidden lg:table-cell">Created At</TableHead>
-              <TableHead className="text-right">API Key Prefix</TableHead>
+              <TableHead className="text-right">API Key</TableHead>
+              <TableHead className="w-[50px]"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -93,8 +99,13 @@ export default async function BusinessesPage() {
                     )}
                   </TableCell>
                   <TableCell className="hidden lg:table-cell">{format(business.createdAt, "MMM d, yyyy")}</TableCell>
-                  <TableCell className="text-right font-mono text-sm text-muted-foreground">
-                    {business.apiKey.substring(0, 8)}...
+                  <TableCell className="text-right">
+                    <div className="flex justify-end">
+                      <ApiKeyDisplay apiKey={business.apiKey} />
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <DeleteBusinessButton id={business.id} name={business.name} />
                   </TableCell>
                 </TableRow>
               ))
